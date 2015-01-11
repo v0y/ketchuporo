@@ -5,7 +5,9 @@ from kivy.uix.widget import Widget
 
 
 class Timer(timedelta, object):
-    pass
+    def tick(self):
+        seconds = self.seconds - 1
+        return Timer(seconds=seconds)
 
 
 class Ketchuporo(Widget):
@@ -16,7 +18,7 @@ class Ketchuporo(Widget):
         Clock.schedule_interval(self.run_timer, 1)
 
     def run_timer(self, *args):
-        self.timer = self.timer - timedelta(seconds=1)
+        self.timer = self.timer.tick()
         print(self.timer)
 
 
