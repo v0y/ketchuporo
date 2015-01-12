@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
@@ -50,6 +51,7 @@ class Ketchuporo(Widget):
 class KetchuporoApp(App):
     def build(self):
         return Ketchuporo()
+
 
 if __name__ == '__main__':
     KetchuporoApp().run()
