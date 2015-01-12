@@ -9,7 +9,10 @@ from kivy.uix.widget import Widget
 class Timer(timedelta, object):
     def tick(self):
         seconds = self.seconds - 1
-        return Timer(seconds=seconds)
+        if seconds == 0:
+            return False
+        else:
+            return Timer(seconds=seconds)
 
 
 class TimerModel(EventDispatcher):
@@ -33,8 +36,15 @@ class Ketchuporo(Widget):
         self.timer = self.timer.tick()
 
     def timer_run(self, _):
-        self.timer_tick()
-        self.timer_model.label = str(self.timer)
+        self.timer = self.timer.tick()
+        if not self.timer:
+            self.timer_stop()
+            return False
+        else:
+            self.timer_model.label = str(self.timer)
+
+    def timer_stop(self):
+        self.timer_model.label = 'Time\'s up!'
 
 
 class KetchuporoApp(App):
