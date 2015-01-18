@@ -3,7 +3,10 @@ from datetime import timedelta
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
-from kivy.properties import StringProperty
+from kivy.properties import (
+    NumericProperty,
+    StringProperty,
+)
 from kivy.uix.widget import Widget
 
 
@@ -16,22 +19,22 @@ class Timer(timedelta, object):
             return Timer(seconds=seconds)
 
 
-class TimerModel(EventDispatcher):
-    label = StringProperty('')
+class KetchuporoModel(EventDispatcher):
+    timer_label = StringProperty('')
+    pomodoros_counter = NumericProperty(1)
 
     def __init__(self):
-        super(TimerModel, self).__init__()
-        self.label = ''
+        super(KetchuporoModel, self).__init__()
+        self.timer_label = ''
 
 
 class Ketchuporo(Widget):
-    timer_model = TimerModel()
+    model = KetchuporoModel()
     timer = Timer(seconds=5)
-    pomodoros_counter = 0
 
     def __init__(self):
         super(Ketchuporo, self).__init__()
-        self.timer_model.label = str(self.timer)
+        self.model.timer_label = str(self.timer)
         self.start_pomodoro()
 
     def start_pomodoro(self):
@@ -48,7 +51,7 @@ class Ketchuporo(Widget):
 
     def timer_tick(self):
         self.timer = self.timer.tick()
-        self.timer_model.label = str(self.timer)
+        self.model.timer_label = str(self.timer)
 
     def pomodoro_timer(self, _):
         self.timer_tick()
@@ -57,9 +60,9 @@ class Ketchuporo(Widget):
             return False
 
     def pomodoro_stop(self):
-        self.pomodoros_counter += 1
-        self.timer_model.label = 'Time\'s up!'
-        if self.pomodoros_counter % 4:
+        self.model.pomodoros_counter += 1
+        self.model.timer_label = 'Time\'s up!'
+        if self.model.pomodoros_counter % 4:
             self.start_short_break()
         else:
             self.start_long_break()
@@ -71,7 +74,7 @@ class Ketchuporo(Widget):
             return False
 
     def short_break_stop(self):
-        self.timer_model.label = 'Time\'s up!'
+        self.model.timer_label = 'Time\'s up!'
         self.start_pomodoro()
 
     def long_break_timer(self, _):
@@ -81,7 +84,7 @@ class Ketchuporo(Widget):
             return False
 
     def long_break_stop(self):
-        self.timer_model.label = 'Time\'s up!'
+        self.model.timer_label = 'Time\'s up!'
         self.start_pomodoro()
 
 
