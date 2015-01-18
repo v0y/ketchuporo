@@ -8,7 +8,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
 
 
 class Timer(timedelta, object):
@@ -49,14 +48,17 @@ class TimerWidget(BoxLayout):
     def start_pomodoro(self):
         self.model.pomodoros_counter += 1
         self.timer = Timer(seconds=5)
+        self.model.timer_label = str(self.timer)
         Clock.schedule_interval(self.pomodoro_timer, 1)
 
-    def start_short_break(self):
+    def start_short_break(self, _):
         self.timer = Timer(seconds=3)
+        self.model.timer_label = str(self.timer)
         Clock.schedule_interval(self.short_break_timer, 1)
 
-    def start_long_break(self):
+    def start_long_break(self, _):
         self.timer = Timer(seconds=10)
+        self.model.timer_label = str(self.timer)
         Clock.schedule_interval(self.long_break_timer, 1)
 
     def timer_tick(self):
@@ -72,9 +74,9 @@ class TimerWidget(BoxLayout):
     def pomodoro_stop(self):
         self.model.timer_label = 'Time\'s up!'
         if self.model.pomodoros_counter % 4:
-            self.start_short_break()
+            Clock.schedule_once(self.start_short_break, 1)
         else:
-            self.start_long_break()
+            Clock.schedule_once(self.start_long_break, 1)
 
     def short_break_timer(self, _):
         self.timer_tick()
