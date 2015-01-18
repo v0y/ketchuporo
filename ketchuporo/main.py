@@ -27,6 +27,7 @@ class TimerModel(EventDispatcher):
 class Ketchuporo(Widget):
     timer_model = TimerModel()
     timer = Timer(seconds=5)
+    pomodoros_counter = 0
 
     def __init__(self):
         super(Ketchuporo, self).__init__()
@@ -41,6 +42,10 @@ class Ketchuporo(Widget):
         self.timer = Timer(seconds=3)
         Clock.schedule_interval(self.short_break_timer, 1)
 
+    def start_long_break(self):
+        self.timer = Timer(seconds=10)
+        Clock.schedule_interval(self.long_break_timer, 1)
+
     def timer_tick(self):
         self.timer = self.timer.tick()
         self.timer_model.label = str(self.timer)
@@ -52,8 +57,12 @@ class Ketchuporo(Widget):
             return False
 
     def pomodoro_stop(self):
+        self.pomodoros_counter += 1
         self.timer_model.label = 'Time\'s up!'
-        self.start_short_break()
+        if self.pomodoros_counter % 4:
+            self.start_short_break()
+        else:
+            self.start_long_break()
 
     def short_break_timer(self, _):
         self.timer_tick()
@@ -62,6 +71,16 @@ class Ketchuporo(Widget):
             return False
 
     def short_break_stop(self):
+        self.timer_model.label = 'Time\'s up!'
+        self.start_pomodoro()
+
+    def long_break_timer(self, _):
+        self.timer_tick()
+        if not self.timer:
+            self.long_break_stop()
+            return False
+
+    def long_break_stop(self):
         self.timer_model.label = 'Time\'s up!'
         self.start_pomodoro()
 
