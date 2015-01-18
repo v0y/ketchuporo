@@ -8,6 +8,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 
 
 class Timer(timedelta, object):
@@ -40,26 +41,33 @@ class WelcomeWidget(BoxLayout):
 class TimerWidget(BoxLayout):
     model = KetchuporoModel()
     timer = Timer(seconds=5)
+    button = None
 
     def __init__(self):
         super(TimerWidget, self).__init__()
         self.model.timer_label = str(self.timer)
 
-    def start_pomodoro(self):
+    def start_pomodoro(self, *_):
         self.model.pomodoros_counter += 1
         self.timer = Timer(seconds=5)
         self.model.timer_label = str(self.timer)
+        try:
+            self.remove_widget(self.button)
+        except AttributeError:
+            pass
         Clock.schedule_interval(self.pomodoro_timer, 1)
 
     def start_short_break(self, _):
         self.timer = Timer(seconds=3)
         self.model.timer_label = str(self.timer)
-        Clock.schedule_interval(self.short_break_timer, 1)
+        self.remove_widget(self.button)
+        Clock.schedule_interval(self.break_timer, 1)
 
     def start_long_break(self, _):
         self.timer = Timer(seconds=10)
         self.model.timer_label = str(self.timer)
-        Clock.schedule_interval(self.long_break_timer, 1)
+        self.remove_widget(self.button)
+        Clock.schedule_interval(self.break_timer, 1)
 
     def timer_tick(self):
         self.timer = self.timer.tick()
@@ -73,30 +81,27 @@ class TimerWidget(BoxLayout):
 
     def pomodoro_stop(self):
         self.model.timer_label = 'Time\'s up!'
+        self.button = Button()
         if self.model.pomodoros_counter % 4:
-            Clock.schedule_once(self.start_short_break, 1)
+            self.button.text = 'Start short break'
+            self.button.bind(on_release=self.start_short_break)
         else:
-            Clock.schedule_once(self.start_long_break, 1)
+            self.button.text = 'Start long break'
+            self.button.bind(on_release=self.start_long_break)
+        self.add_widget(self.button)
 
-    def short_break_timer(self, _):
+    def break_timer(self, _):
         self.timer_tick()
         if not self.timer:
-            self.short_break_stop()
+            self.break_stop()
             return False
 
-    def short_break_stop(self):
+    def break_stop(self):
         self.model.timer_label = 'Time\'s up!'
-        self.start_pomodoro()
-
-    def long_break_timer(self, _):
-        self.timer_tick()
-        if not self.timer:
-            self.long_break_stop()
-            return False
-
-    def long_break_stop(self):
-        self.model.timer_label = 'Time\'s up!'
-        self.start_pomodoro()
+        self.button = Button()
+        self.button.text = 'Start pomodoro'
+        self.button.bind(on_release=self.start_pomodoro)
+        self.add_widget(self.button)
 
 
 class KetchuporoLayout(BoxLayout):
@@ -110,7 +115,6 @@ class KetchuporoLayout(BoxLayout):
         self.remove_widget(self.welcome_widget)
         self.add_widget(self.timer_widget)
         self.timer_widget.start_pomodoro()
-
 
 
 class KetchuporoApp(App):
