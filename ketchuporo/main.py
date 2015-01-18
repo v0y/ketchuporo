@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
@@ -48,6 +49,7 @@ class TimerWidget(BoxLayout):
         self.model.timer_label = str(self.timer)
 
     def start_pomodoro(self, *_):
+        Logger.debug('Starting pomodoro')
         self.model.pomodoros_counter += 1
         self.timer = Timer(seconds=5)
         self.model.timer_label = str(self.timer)
@@ -58,12 +60,14 @@ class TimerWidget(BoxLayout):
         Clock.schedule_interval(self.pomodoro_timer, 1)
 
     def start_short_break(self, _):
+        Logger.debug('Starting short break')
         self.timer = Timer(seconds=3)
         self.model.timer_label = str(self.timer)
         self.remove_widget(self.button)
         Clock.schedule_interval(self.break_timer, 1)
 
     def start_long_break(self, _):
+        Logger.debug('Starting long break')
         self.timer = Timer(seconds=10)
         self.model.timer_label = str(self.timer)
         self.remove_widget(self.button)
@@ -80,6 +84,7 @@ class TimerWidget(BoxLayout):
             return False
 
     def pomodoro_stop(self):
+        Logger.debug('Stopping pomodoro')
         self.model.timer_label = 'Time\'s up!'
         self.button = Button()
         if self.model.pomodoros_counter % 4:
@@ -97,6 +102,7 @@ class TimerWidget(BoxLayout):
             return False
 
     def break_stop(self):
+        Logger.debug('Stopping break')
         self.model.timer_label = 'Time\'s up!'
         self.button = Button()
         self.button.text = 'Start pomodoro'
