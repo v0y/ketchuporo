@@ -4,16 +4,21 @@ from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
+from kivy.lang import Builder
 from kivy.properties import (
     NumericProperty,
     StringProperty,
 )
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import (
     Screen,
     ScreenManager,
 )
+
+
+# TODO: why kv file doesn't load automatically?
+kv_file = open('ketchuporo.kv')
+Builder.load_string(kv_file.read())
 
 
 class Timer(timedelta, object):
@@ -35,22 +40,13 @@ class KetchuporoModel(EventDispatcher):
 
 
 class WelcomeScreen(Screen):
-    def __init__(self, layout):
-        super(Screen, self).__init__()
-        self.layout = layout
-
-    def start(self):
-        self.layout.start()
+    pass
 
 
 class TimerScreen(Screen):
     model = KetchuporoModel()
     timer = Timer(seconds=5)
     button = None
-
-    def __init__(self):
-        super(TimerScreen, self).__init__()
-        self.model.timer_label = str(self.timer)
 
     def start_pomodoro(self, *_):
         Logger.debug('Starting pomodoro')
@@ -114,22 +110,15 @@ class TimerScreen(Screen):
         self.add_widget(self.button)
 
 
-class KetchuporoLayout(BoxLayout):
-    def __init__(self):
-        super(KetchuporoLayout, self).__init__()
-        self.welcome_widget = WelcomeScreen(self)
-        self.timer_widget = TimerScreen()
-        self.add_widget(self.welcome_widget)
-
-    def start(self):
-        self.remove_widget(self.welcome_widget)
-        self.add_widget(self.timer_widget)
-        self.timer_widget.start_pomodoro()
+# Create the screen manager
+screen_manager = ScreenManager()
+screen_manager.add_widget(WelcomeScreen(name='welcome'))
+screen_manager.add_widget(TimerScreen(name='timer'))
 
 
 class KetchuporoApp(App):
     def build(self):
-        return KetchuporoLayout()
+        return screen_manager
 
 
 if __name__ == '__main__':

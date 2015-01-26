@@ -1,8 +1,5 @@
 #:kivy 1.8.0
 
-<KetchuporoLayout>:
-    orientation: "vertical"
-
 <WelcomeScreen>:
     BoxLayout:
         orientation: "vertical"
@@ -11,9 +8,11 @@
             text: "no elo"
         Button:
             text: "Start!"
-            on_release: root.start()
+            on_release: root.manager.current = 'timer'
+
 
 <TimerScreen>:
+    on_enter: root.start_pomodoro()
     BoxLayout:
         orientation: "vertical"
         Label:
