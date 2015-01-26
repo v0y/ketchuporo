@@ -10,6 +10,10 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.screenmanager import (
+    Screen,
+    ScreenManager,
+)
 
 
 class Timer(timedelta, object):
@@ -30,22 +34,22 @@ class KetchuporoModel(EventDispatcher):
         self.timer_label = ''
 
 
-class WelcomeWidget(BoxLayout):
+class WelcomeScreen(Screen):
     def __init__(self, layout):
-        super(WelcomeWidget, self).__init__()
+        super(Screen, self).__init__()
         self.layout = layout
 
     def start(self):
         self.layout.start()
 
 
-class TimerWidget(BoxLayout):
+class TimerScreen(Screen):
     model = KetchuporoModel()
     timer = Timer(seconds=5)
     button = None
 
     def __init__(self):
-        super(TimerWidget, self).__init__()
+        super(TimerScreen, self).__init__()
         self.model.timer_label = str(self.timer)
 
     def start_pomodoro(self, *_):
@@ -113,8 +117,8 @@ class TimerWidget(BoxLayout):
 class KetchuporoLayout(BoxLayout):
     def __init__(self):
         super(KetchuporoLayout, self).__init__()
-        self.welcome_widget = WelcomeWidget(self)
-        self.timer_widget = TimerWidget()
+        self.welcome_widget = WelcomeScreen(self)
+        self.timer_widget = TimerScreen()
         self.add_widget(self.welcome_widget)
 
     def start(self):
