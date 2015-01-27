@@ -9,7 +9,6 @@ from kivy.properties import (
     NumericProperty,
     StringProperty,
 )
-from kivy.uix.button import Button
 from kivy.uix.screenmanager import (
     Screen,
     ScreenManager,
@@ -24,58 +23,63 @@ Builder.load_string(kv_file.read())
 class Timer(timedelta, object):
     def tick(self):
         seconds = self.seconds - 1
-        if seconds == 0:
-            return False
-        else:
-            return Timer(seconds=seconds)
+        return Timer(seconds=seconds)
 
 
-class KetchuporoModel(EventDispatcher):
+class DynamicLabel(EventDispatcher):
+    label = StringProperty('')
+
+    def __init__(self):
+        super(DynamicLabel, self).__init__()
+        self.label = ''
+
+
+class TimerModel(EventDispatcher):
     timer_label = StringProperty('')
     pomodoros_counter = NumericProperty(0)
 
     def __init__(self):
-        super(KetchuporoModel, self).__init__()
+        super(TimerModel, self).__init__()
         self.timer_label = ''
+
+model = TimerModel()
+
+
+class TimerMixin(object):
+    duration = 0
+    timer = None
+    model = model
+
+    def reset_timer(self, duration=None):
+        self.timer = Timer(seconds=duration or self.duration)
+        self.model.timer_label = str(self.timer)
+
+    def timer_tick(self):
+        self.timer = self.timer.tick()
+        self.model.timer_label = str(self.timer)
 
 
 class WelcomeScreen(Screen):
     pass
 
 
-class TimerScreen(Screen):
-    model = KetchuporoModel()
-    timer = Timer(seconds=5)
-    button = None
+class TimerScreen(TimerMixin, Screen):
+    duration = 1
+    timer = None
 
-    def start_pomodoro(self, *_):
+    def __init__(self, **kwargs):
+        super(TimerScreen, self).__init__(**kwargs)
+
+    def pomodoro_start(self, *_):
         Logger.debug('Starting pomodoro')
-        self.model.pomodoros_counter += 1
-        self.timer = Timer(seconds=5)
-        self.model.timer_label = str(self.timer)
-        try:
-            self.remove_widget(self.button)
-        except AttributeError:
-            pass
+        model.pomodoros_counter += 1
+        self.reset_timer()
+        model.timer_label = str(self.timer)
         Clock.schedule_interval(self.pomodoro_timer, 1)
 
-    def start_short_break(self, _):
-        Logger.debug('Starting short break')
-        self.timer = Timer(seconds=3)
-        self.model.timer_label = str(self.timer)
-        self.remove_widget(self.button)
-        Clock.schedule_interval(self.break_timer, 1)
-
-    def start_long_break(self, _):
-        Logger.debug('Starting long break')
-        self.timer = Timer(seconds=10)
-        self.model.timer_label = str(self.timer)
-        self.remove_widget(self.button)
-        Clock.schedule_interval(self.break_timer, 1)
-
-    def timer_tick(self):
-        self.timer = self.timer.tick()
-        self.model.timer_label = str(self.timer)
+    def pomodoro_stop(self):
+        Logger.debug('Stopping pomodoro')
+        screen_manager.current = 'pomodoros_over'
 
     def pomodoro_timer(self, _):
         self.timer_tick()
@@ -83,17 +87,42 @@ class TimerScreen(Screen):
             self.pomodoro_stop()
             return False
 
-    def pomodoro_stop(self):
-        Logger.debug('Stopping pomodoro')
-        self.model.timer_label = 'Time\'s up!'
-        self.button = Button()
-        if self.model.pomodoros_counter % 4:
-            self.button.text = 'Start short break'
-            self.button.bind(on_release=self.start_short_break)
+
+class PomodorosOverScreen(Screen):
+    button_label = DynamicLabel()
+
+    def update_button_label(self):
+        if model.pomodoros_counter % 4:
+            self.button_label.label = 'Start short break'
         else:
-            self.button.text = 'Start long break'
-            self.button.bind(on_release=self.start_long_break)
-        self.add_widget(self.button)
+            self.button_label.label = 'Start long break'
+
+
+class BreakScreen(TimerMixin, Screen):
+    button = None
+    short_duration = 3
+    long_duration = 10
+
+    def __init__(self, **kwargs):
+        self.timer = Timer(seconds=self.duration)
+        super(BreakScreen, self).__init__(**kwargs)
+
+    @property
+    def is_short(self):
+        return bool(model.pomodoros_counter % 4)
+
+    @property
+    def duration(self):
+        return self.short_duration if self.is_short else self.long_duration
+
+    def break_start(self):
+        if self.is_short:
+            Logger.debug('Starting short break')
+        else:
+            Logger.debug('Starting long break')
+
+        self.reset_timer()
+        Clock.schedule_interval(self.break_timer, 1)
 
     def break_timer(self, _):
         self.timer_tick()
@@ -103,17 +132,20 @@ class TimerScreen(Screen):
 
     def break_stop(self):
         Logger.debug('Stopping break')
-        self.model.timer_label = 'Time\'s up!'
-        self.button = Button()
-        self.button.text = 'Start pomodoro'
-        self.button.bind(on_release=self.start_pomodoro)
-        self.add_widget(self.button)
+        screen_manager.current = 'breaks_over'
+
+
+class BreaksOverScreen(Screen):
+    pass
 
 
 # Create the screen manager
 screen_manager = ScreenManager()
 screen_manager.add_widget(WelcomeScreen(name='welcome'))
 screen_manager.add_widget(TimerScreen(name='timer'))
+screen_manager.add_widget(PomodorosOverScreen(name='pomodoros_over'))
+screen_manager.add_widget(BreakScreen(name='break'))
+screen_manager.add_widget(BreaksOverScreen(name='breaks_over'))
 
 
 class KetchuporoApp(App):
