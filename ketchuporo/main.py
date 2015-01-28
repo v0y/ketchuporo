@@ -58,6 +58,15 @@ class TimerMixin(object):
         self.timer = self.timer.tick()
         self.model.timer_label = str(self.timer)
 
+    def timer_stop(self):
+        raise NotImplementedError()
+
+    def timer_runner(self, _):
+        self.timer_tick()
+        if not self.timer:
+            self.timer_stop()
+            return False
+
 
 class WelcomeScreen(Screen):
     pass
@@ -70,22 +79,18 @@ class TimerScreen(TimerMixin, Screen):
     def __init__(self, **kwargs):
         super(TimerScreen, self).__init__(**kwargs)
 
-    def pomodoro_start(self, *_):
-        Logger.debug('Starting pomodoro')
+    def timer_pre_start(self):
         model.pomodoros_counter += 1
         self.reset_timer()
-        model.timer_label = str(self.timer)
-        Clock.schedule_interval(self.pomodoro_timer, 1)
 
-    def pomodoro_stop(self):
+    def timer_start(self):
+        Logger.debug('Starting pomodoro')
+        model.timer_label = str(self.timer)
+        Clock.schedule_interval(self.timer_runner, 1)
+
+    def timer_stop(self):
         Logger.debug('Stopping pomodoro')
         screen_manager.current = 'pomodoros_over'
-
-    def pomodoro_timer(self, _):
-        self.timer_tick()
-        if not self.timer:
-            self.pomodoro_stop()
-            return False
 
 
 class PomodorosOverScreen(Screen):
@@ -115,22 +120,17 @@ class BreakScreen(TimerMixin, Screen):
     def duration(self):
         return self.short_duration if self.is_short else self.long_duration
 
-    def break_start(self):
+    def timer_pre_start(self):
+        self.reset_timer()
+
+    def timer_start(self):
         if self.is_short:
             Logger.debug('Starting short break')
         else:
             Logger.debug('Starting long break')
+        Clock.schedule_interval(self.timer_runner, 1)
 
-        self.reset_timer()
-        Clock.schedule_interval(self.break_timer, 1)
-
-    def break_timer(self, _):
-        self.timer_tick()
-        if not self.timer:
-            self.break_stop()
-            return False
-
-    def break_stop(self):
+    def timer_stop(self):
         Logger.debug('Stopping break')
         screen_manager.current = 'breaks_over'
 

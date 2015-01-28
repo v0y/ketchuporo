@@ -15,7 +15,8 @@
 
 
 <TimerScreen>:
-    on_pre_enter: root.pomodoro_start()
+    on_pre_enter: root.timer_pre_start()
+    on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
         Label:
@@ -39,7 +40,8 @@
 
 
 <BreakScreen>:
-    on_pre_enter: root.break_start()
+    on_pre_enter: root.timer_pre_start()
+    on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
         Label:
