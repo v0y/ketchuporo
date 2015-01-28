@@ -9,6 +9,9 @@
         Button:
             text: "Start!"
             on_release: root.manager.current = 'timer'
+        Button:
+            text: "Settings"
+            on_release: root.manager.current = 'settings'
 
 
 <TimerScreen>:
@@ -53,3 +56,13 @@
         Button:
             text: "Start pomodoro"
             on_release: root.manager.current = 'timer'
+
+
+<SettingsScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        Button:
+            text: "Back"
+            on_release:
+                root.manager.current = 'welcome'
+                root.manager.transition.direction = 'right'

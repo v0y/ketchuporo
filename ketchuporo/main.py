@@ -139,6 +139,10 @@ class BreaksOverScreen(Screen):
     pass
 
 
+class SettingsScreen(Screen):
+    pass
+
+
 # Create the screen manager
 screen_manager = ScreenManager()
 screen_manager.add_widget(WelcomeScreen(name='welcome'))
@@ -146,6 +150,7 @@ screen_manager.add_widget(TimerScreen(name='timer'))
 screen_manager.add_widget(PomodorosOverScreen(name='pomodoros_over'))
 screen_manager.add_widget(BreakScreen(name='break'))
 screen_manager.add_widget(BreaksOverScreen(name='breaks_over'))
+screen_manager.add_widget(SettingsScreen(name='settings'))
 
 
 class KetchuporoApp(App):
