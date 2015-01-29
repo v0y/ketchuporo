@@ -69,7 +69,9 @@ class TimerMixin(object):
 
 
 class WelcomeScreen(Screen):
-    pass
+    @staticmethod
+    def exit():
+        App.get_running_app().stop()
 
 
 class TimerScreen(TimerMixin, Screen):
