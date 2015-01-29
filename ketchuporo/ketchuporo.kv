@@ -8,12 +8,16 @@
             text: "no elo"
         Button:
             text: "Start!"
-            on_release: root.manager.current = 'timer'
+            on_release:
+                root.manager.current = 'timer'
+                root.manager.transition.direction = 'left'
         Button:
             text: "Settings"
-            on_release: root.manager.current = 'settings'
+            on_release:
+                root.manager.current = 'settings'
+                root.manager.transition.direction = 'left'
         Button:
-            text: 'Quit'
+            text: "Quit"
             on_press: root.exit()
 
 
@@ -39,7 +43,9 @@
             text: "Time's Up!"
         Button:
             text: root.button_label.label
-            on_release: root.manager.current = 'break'
+            on_release:
+                root.manager.current = 'break'
+                root.manager.transition.direction = 'left'
 
 
 <BreakScreen>:
@@ -60,7 +66,9 @@
             text: "Break is over!"
         Button:
             text: "Start pomodoro"
-            on_release: root.manager.current = 'timer'
+            on_release:
+                root.manager.current = 'timer'
+                root.manager.transition.direction = 'left'
 
 
 <SettingsScreen>:
