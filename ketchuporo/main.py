@@ -13,6 +13,7 @@ from kivy.uix.screenmanager import (
     Screen,
     ScreenManager,
 )
+from kivy.uix.slider import Slider
 
 
 # TODO: why kv file doesn't load automatically?
@@ -37,6 +38,7 @@ class DynamicLabel(EventDispatcher):
 class TimerModel(EventDispatcher):
     timer_label = StringProperty('')
     pomodoros_counter = NumericProperty(0)
+    pomodoro_duration = NumericProperty(25)
 
     def __init__(self):
         super(TimerModel, self).__init__()
@@ -50,8 +52,8 @@ class TimerMixin(object):
     timer = None
     model = model
 
-    def reset_timer(self, duration=None):
-        self.timer = Timer(seconds=duration or self.duration)
+    def reset_timer(self):
+        self.timer = Timer(minutes=self.duration)
         self.model.timer_label = str(self.timer)
 
     def timer_tick(self):
@@ -75,11 +77,14 @@ class WelcomeScreen(Screen):
 
 
 class TimerScreen(TimerMixin, Screen):
-    duration = 1
     timer = None
 
     def __init__(self, **kwargs):
         super(TimerScreen, self).__init__(**kwargs)
+
+    @property
+    def duration(self):
+        return self.model.pomodoro_duration
 
     def timer_pre_start(self):
         model.pomodoros_counter += 1
@@ -142,7 +147,10 @@ class BreaksOverScreen(Screen):
 
 
 class SettingsScreen(Screen):
-    pass
+    model = model
+
+    def set_pomodoro_duration(self, _, value):
+        self.model.pomodoro_duration = value
 
 
 # Create the screen manager

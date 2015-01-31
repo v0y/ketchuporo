@@ -74,6 +74,16 @@
 <SettingsScreen>:
     BoxLayout:
         orientation: "vertical"
+        Label:
+            font_size: 35
+            text: "Pomodoro duration: {} min".format(root.model.pomodoro_duration)
+        Slider:
+            id: pomodoro_duration
+            value: 25
+            min: 15
+            max: 60
+            step: 1
+            on_value: root.set_pomodoro_duration(*args)
         Button:
             text: "Back"
             on_release:
