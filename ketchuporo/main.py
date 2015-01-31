@@ -42,6 +42,7 @@ class TimerModel(EventDispatcher):
     pomodoro_duration = NumericProperty(25)
     short_break_duration = NumericProperty(5)
     long_break_duration = NumericProperty(15)
+    pomodori_for_cycle = NumericProperty(4)
 
     def __init__(self):
         super(TimerModel, self).__init__()
@@ -107,7 +108,7 @@ class PomodorosOverScreen(Screen):
     button_label = DynamicLabel()
 
     def update_button_label(self):
-        if model.pomodoros_counter % 4:
+        if model.pomodoros_counter % model.pomodori_for_cycle:
             self.button_label.label = 'Start short break'
         else:
             self.button_label.label = 'Start long break'
@@ -124,7 +125,7 @@ class BreakScreen(TimerMixin, Screen):
 
     @property
     def is_short(self):
-        return bool(model.pomodoros_counter % 4)
+        return bool(model.pomodoros_counter % self.model.pomodori_for_cycle)
 
     @property
     def duration(self):
@@ -159,6 +160,7 @@ class SettingsScreen(Screen):
         self.ids['pomodoro_duration'].value = Defaults.POMODORO_DURATION
         self.ids['short_break_duration'].value = Defaults.SHORT_BREAK
         self.ids['long_break_duration'].value = Defaults.LONG_BREAK
+        self.ids['pomodori_for_cycle'].value = Defaults.POMODORI_FOR_CYCLE
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value
@@ -168,6 +170,9 @@ class SettingsScreen(Screen):
 
     def set_long_break_duration(self, _, value):
         self.model.long_break_duration = value
+
+    def set_pomodori_for_cycle(self, _, value):
+        self.model.pomodori_for_cycle = value
 
 
 # Create the screen manager

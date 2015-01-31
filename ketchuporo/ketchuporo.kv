@@ -105,6 +105,16 @@
             max: 30
             step: 1
             on_value: root.set_long_break_duration(*args)
+        Label:
+            font_size: 25
+            text: "Long break after {} pomodori".format(root.model.pomodori_for_cycle)
+        Slider:
+            id: pomodori_for_cycle
+            value: 4
+            min: 2
+            max: 10
+            step: 1
+            on_value: root.set_pomodori_for_cycle(*args)
         Button:
             text: "Reset to defaults"
             on_release: root.reset_settings()
