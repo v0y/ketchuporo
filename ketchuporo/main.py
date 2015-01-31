@@ -14,6 +14,8 @@ from kivy.uix.screenmanager import (
     ScreenManager,
 )
 
+from ketchuporo.const import Defaults
+
 
 # TODO: why kv file doesn't load automatically?
 kv_file = open('ketchuporo.kv')
@@ -152,6 +154,11 @@ class BreaksOverScreen(Screen):
 
 class SettingsScreen(Screen):
     model = model
+
+    def reset_settings(self):
+        self.ids['pomodoro_duration'].value = Defaults.POMODORO_DURATION
+        self.ids['short_break_duration'].value = Defaults.SHORT_BREAK
+        self.ids['long_break_duration'].value = Defaults.LONG_BREAK
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value
