@@ -57,6 +57,7 @@ class TimerMixin(object):
     model = model
 
     def reset_timer(self):
+        Logger.debug('Reset timer')
         self.timer = Timer(minutes=self.duration)
         self.model.timer_label = str(self.timer)
 
@@ -68,6 +69,7 @@ class TimerMixin(object):
         raise NotImplementedError()
 
     def timer_runner(self, _):
+        Logger.debug('Run timer')
         self.timer_tick()
         if not self.timer:
             self.timer_stop()
@@ -77,6 +79,7 @@ class TimerMixin(object):
 class WelcomeScreen(Screen):
     @staticmethod
     def exit():
+        Logger.debug('Exiting')
         App.get_running_app().stop()
 
 
@@ -91,6 +94,7 @@ class TimerScreen(TimerMixin, Screen):
         return self.model.pomodoro_duration
 
     def timer_pre_start(self):
+        Logger.debug('Pre-starting pomodoro')
         model.pomodoros_counter += 1
         self.reset_timer()
 
@@ -135,6 +139,7 @@ class BreakScreen(TimerMixin, Screen):
             return self.model.long_break_duration
 
     def timer_pre_start(self):
+        Logger.debug('Pre-starting break')
         self.reset_timer()
 
     def timer_start(self):
@@ -157,6 +162,7 @@ class SettingsScreen(Screen):
     model = model
 
     def reset_settings(self):
+        Logger.debug('Reset settings to default')
         self.ids['pomodoro_duration'].value = Defaults.POMODORO_DURATION
         self.ids['short_break_duration'].value = Defaults.SHORT_BREAK
         self.ids['long_break_duration'].value = Defaults.LONG_BREAK
