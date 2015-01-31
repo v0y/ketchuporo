@@ -78,12 +78,29 @@
             font_size: 35
             text: "Pomodoro duration: {} min".format(root.model.pomodoro_duration)
         Slider:
-            id: pomodoro_duration
             value: 25
             min: 15
             max: 60
             step: 1
             on_value: root.set_pomodoro_duration(*args)
+        Label:
+            font_size: 35
+            text: "Short break duration: {} min".format(root.model.short_break_duration)
+        Slider:
+            value: 5
+            min: 1
+            max: 15
+            step: 1
+            on_value: root.set_short_break_duration(*args)
+        Label:
+            font_size: 35
+            text: "Long break duration: {} min".format(root.model.long_break_duration)
+        Slider:
+            value: 15
+            min: 5
+            max: 30
+            step: 1
+            on_value: root.set_long_break_duration(*args)
         Button:
             text: "Back"
             on_release:
