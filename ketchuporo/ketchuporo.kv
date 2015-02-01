@@ -32,6 +32,12 @@
         Label:
             font_size: 70
             text: str(root.model.pomodoros_counter)
+        Button:
+            text: "Back to menu"
+            on_release:
+                root.timer_stop()
+                root.manager.current = 'welcome'
+                root.manager.transition.direction = 'right'
 
 
 <PomodorosOverScreen>:

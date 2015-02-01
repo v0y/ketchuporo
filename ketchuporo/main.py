@@ -53,8 +53,9 @@ model = TimerModel()
 
 class TimerMixin(object):
     duration = 0
-    timer = None
-    model = model
+    timer = None  # Timer onject
+    timer_event = None  # Clock object
+    model = model  # TimerModel object
 
     def reset_timer(self):
         Logger.debug('Reset timer')
@@ -65,11 +66,15 @@ class TimerMixin(object):
         self.timer = self.timer.tick()
         self.model.timer_label = str(self.timer)
 
+    def timer_start(self):
+        Clock.unschedule(self.timer_runner)
+        self.timer_event = Clock.schedule_interval(self.timer_runner, 1)
+
     def timer_stop(self):
-        raise NotImplementedError()
+        Clock.unschedule(self.timer_runner)
 
     def timer_runner(self, _):
-        Logger.debug('Run timer')
+        Logger.debug('Tick! {}'.format(self.timer).replace(':', '-'))
         self.timer_tick()
         if not self.timer:
             self.timer_stop()
@@ -101,9 +106,10 @@ class TimerScreen(TimerMixin, Screen):
     def timer_start(self):
         Logger.debug('Starting pomodoro')
         model.timer_label = str(self.timer)
-        Clock.schedule_interval(self.timer_runner, 1)
+        super(TimerScreen, self).timer_start()
 
     def timer_stop(self):
+        super(TimerScreen, self).timer_stop()
         Logger.debug('Stopping pomodoro')
         screen_manager.current = 'pomodoros_over'
 
@@ -147,9 +153,10 @@ class BreakScreen(TimerMixin, Screen):
             Logger.debug('Starting short break')
         else:
             Logger.debug('Starting long break')
-        Clock.schedule_interval(self.timer_runner, 1)
+        super(BreakScreen, self).timer_start()
 
     def timer_stop(self):
+        super(BreakScreen, self).timer_stop()
         Logger.debug('Stopping break')
         screen_manager.current = 'breaks_over'
 
