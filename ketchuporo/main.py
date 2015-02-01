@@ -36,7 +36,7 @@ class DynamicLabel(EventDispatcher):
 
 class TimerModel(EventDispatcher):
     timer_label = StringProperty('')
-    pomodoros_counter = NumericProperty(0)
+    pomodori_counter = NumericProperty(0)
     pomodoro_duration = NumericProperty(25)
     short_break_duration = NumericProperty(5)
     long_break_duration = NumericProperty(15)
@@ -55,10 +55,14 @@ class TimerMixin(object):
     timer_event = None  # Clock object
     model = model  # TimerModel object
 
-    def reset_timer(self):
+    def timer_reset(self):
         Logger.debug('Reset timer')
         self.timer = Timer(minutes=self.duration)
         self.model.timer_label = str(self.timer)
+
+    def reset_pomodori_counter(self):
+        Logger.debug('Reset pomodori counter')
+        self.model.pomodori_counter = 0
 
     def timer_tick(self):
         self.timer = self.timer.tick()
@@ -72,6 +76,7 @@ class TimerMixin(object):
         self.timer_unschedule()
 
     def timer_unschedule(self):
+        Logger.debug('Unscheduling timer')
         Clock.unschedule(self.timer_runner)
 
     def timer_runner(self, _):
@@ -82,7 +87,7 @@ class TimerMixin(object):
             return False
 
 
-class WelcomeScreen(Screen):
+class WelcomeScreen(TimerMixin, Screen):
     @staticmethod
     def exit():
         Logger.debug('Exiting')
@@ -101,8 +106,8 @@ class TimerScreen(TimerMixin, Screen):
 
     def timer_pre_start(self):
         Logger.debug('Pre-starting pomodoro')
-        model.pomodoros_counter += 1
-        self.reset_timer()
+        model.pomodori_counter += 1
+        self.timer_reset()
 
     def timer_start(self):
         Logger.debug('Starting pomodoro')
@@ -119,7 +124,7 @@ class PomodorosOverScreen(Screen):
     button_label = DynamicLabel()
 
     def update_button_label(self):
-        if model.pomodoros_counter % model.pomodori_for_cycle:
+        if model.pomodori_counter % model.pomodori_for_cycle:
             self.button_label.label = 'Start short break'
         else:
             self.button_label.label = 'Start long break'
@@ -136,7 +141,7 @@ class BreakScreen(TimerMixin, Screen):
 
     @property
     def is_short(self):
-        return bool(model.pomodoros_counter % self.model.pomodori_for_cycle)
+        return bool(model.pomodori_counter % self.model.pomodori_for_cycle)
 
     @property
     def duration(self):
@@ -147,7 +152,7 @@ class BreakScreen(TimerMixin, Screen):
 
     def timer_pre_start(self):
         Logger.debug('Pre-starting break')
-        self.reset_timer()
+        self.timer_reset()
 
     def timer_start(self):
         if self.is_short:

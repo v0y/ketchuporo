@@ -9,6 +9,7 @@
         Button:
             text: "Start!"
             on_release:
+                root.reset_pomodori_counter()
                 root.manager.current = 'timer'
                 root.manager.transition.direction = 'left'
         Button:
@@ -31,7 +32,7 @@
             text: root.model.timer_label
         Label:
             font_size: 70
-            text: str(root.model.pomodoros_counter)
+            text: str(root.model.pomodori_counter)
         Button:
             text: "Back to menu"
             on_release:
@@ -52,6 +53,11 @@
             on_release:
                 root.manager.current = 'break'
                 root.manager.transition.direction = 'left'
+        Button:
+            text: "Back to menu"
+            on_release:
+                root.manager.current = 'welcome'
+                root.manager.transition.direction = 'right'
 
 
 <BreakScreen>:
@@ -62,6 +68,12 @@
         Label:
             font_size: 70
             text: root.model.timer_label
+        Button:
+            text: "Back to menu"
+            on_release:
+                root.timer_unschedule()
+                root.manager.current = 'welcome'
+                root.manager.transition.direction = 'right'
 
 
 <BreaksOverScreen>:
@@ -75,6 +87,11 @@
             on_release:
                 root.manager.current = 'timer'
                 root.manager.transition.direction = 'left'
+        Button:
+            text: "Back to menu"
+            on_release:
+                root.manager.current = 'welcome'
+                root.manager.transition.direction = 'right'
 
 
 <SettingsScreen>:
