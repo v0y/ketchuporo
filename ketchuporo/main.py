@@ -17,9 +17,7 @@ from kivy.uix.screenmanager import (
 from ketchuporo.const import Defaults
 
 
-# TODO: why kv file doesn't load automatically?
-kv_file = open('ketchuporo.kv')
-Builder.load_string(kv_file.read())
+Builder.load_file('ketchuporo.kv')
 
 
 class Timer(timedelta, object):
