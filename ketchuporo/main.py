@@ -55,6 +55,10 @@ class TimerMixin(object):
     timer_event = None  # Clock object
     model = model  # TimerModel object
 
+    @classmethod
+    def is_break_short(cls):
+        return bool(model.pomodori_counter % model.pomodori_for_cycle)
+
     def timer_reset(self):
         Logger.debug('Reset timer')
         self.timer = Timer(minutes=self.duration)
@@ -99,6 +103,7 @@ class WelcomeScreen(TimerMixin, Screen):
 
 class TimerScreen(TimerMixin, Screen):
     timer = None
+    start_break_label = DynamicLabel()
 
     def __init__(self, **kwargs):
         super(TimerScreen, self).__init__(**kwargs)
@@ -112,6 +117,12 @@ class TimerScreen(TimerMixin, Screen):
         model.pomodori_counter += 1
         self.timer_reset()
 
+    def update_break_button_label(self):
+        if self.is_break_short():
+            self.start_break_label.label = 'Start short break'
+        else:
+            self.start_break_label.label = 'Start long break'
+
     def timer_start(self):
         Logger.debug('Starting pomodoro')
         model.timer_label = str(self.timer)
@@ -121,10 +132,6 @@ class TimerScreen(TimerMixin, Screen):
         super(TimerScreen, self).timer_stop()
         Logger.debug('Stopping pomodoro')
         screen_manager.current = 'pomodoros_over'
-
-    @staticmethod
-    def is_next_break_short(self):
-        return (model.pomodori_counter + 1) % model.pomodori_for_cycle
 
 
 class PomodorosOverScreen(Screen):
@@ -147,12 +154,8 @@ class BreakScreen(TimerMixin, Screen):
         super(BreakScreen, self).__init__(**kwargs)
 
     @property
-    def is_short(self):
-        return bool(model.pomodori_counter % model.pomodori_for_cycle)
-
-    @property
     def duration(self):
-        if self.is_short:
+        if self.is_break_short():
             return self.model.short_break_duration
         else:
             return self.model.long_break_duration
@@ -162,7 +165,7 @@ class BreakScreen(TimerMixin, Screen):
         self.timer_reset()
 
     def timer_start(self):
-        if self.is_short:
+        if self.is_break_short():
             Logger.debug('Starting short break')
         else:
             Logger.debug('Starting long break')
