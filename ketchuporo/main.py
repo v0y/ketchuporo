@@ -69,6 +69,9 @@ class TimerMixin(object):
         self.timer_event = Clock.schedule_interval(self.timer_runner, 1)
 
     def timer_stop(self):
+        self.timer_unschedule()
+
+    def timer_unschedule(self):
         Clock.unschedule(self.timer_runner)
 
     def timer_runner(self, _):

@@ -35,7 +35,7 @@
         Button:
             text: "Back to menu"
             on_release:
-                root.timer_stop()
+                root.timer_unschedule()
                 root.manager.current = 'welcome'
                 root.manager.transition.direction = 'right'
 
