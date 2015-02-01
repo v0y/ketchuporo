@@ -34,6 +34,12 @@
             font_size: 70
             text: str(root.model.pomodori_counter)
         Button:
+            text: "Start {} break".format('short' if root.is_next_break_short else 'long')
+            on_release:
+                root.timer_unschedule()
+                root.manager.current = 'break'
+                root.manager.transition.direction = 'left'
+        Button:
             text: "Back to menu"
             on_release:
                 root.timer_unschedule()

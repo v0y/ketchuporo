@@ -88,6 +88,9 @@ class TimerMixin(object):
 
 
 class WelcomeScreen(TimerMixin, Screen):
+    def __init__(self, **kwargs):
+        super(WelcomeScreen, self).__init__(**kwargs)
+
     @staticmethod
     def exit():
         Logger.debug('Exiting')
@@ -119,6 +122,10 @@ class TimerScreen(TimerMixin, Screen):
         Logger.debug('Stopping pomodoro')
         screen_manager.current = 'pomodoros_over'
 
+    @staticmethod
+    def is_next_break_short(self):
+        return (model.pomodori_counter + 1) % model.pomodori_for_cycle
+
 
 class PomodorosOverScreen(Screen):
     button_label = DynamicLabel()
@@ -141,7 +148,7 @@ class BreakScreen(TimerMixin, Screen):
 
     @property
     def is_short(self):
-        return bool(model.pomodori_counter % self.model.pomodori_for_cycle)
+        return bool(model.pomodori_counter % model.pomodori_for_cycle)
 
     @property
     def duration(self):
