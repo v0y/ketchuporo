@@ -157,6 +157,20 @@
             max: 10
             step: 1
             on_value: root.set_pomodori_for_cycle(*args)
+        Label:
+            font_size: 25
+            text: "Bell after pomodoro"
+        CheckBox:
+            id: bell_after_pomodoro
+            active: True
+            on_active: root.set_bell_after_pomodoro(*args)
+        Label:
+            font_size: 25
+            text: "Bell after break"
+        CheckBox:
+            id: bell_after_break
+            active: True
+            on_active: root.set_bell_after_break(*args)
         Button:
             text: "Reset to defaults"
             on_release: root.reset_settings()

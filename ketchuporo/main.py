@@ -42,6 +42,8 @@ class TimerModel(EventDispatcher):
     short_break_duration = NumericProperty(5)
     long_break_duration = NumericProperty(15)
     pomodori_for_cycle = NumericProperty(4)
+    bell_after_pomodoro = True
+    bell_after_break = True
 
     def __init__(self):
         super(TimerModel, self).__init__()
@@ -129,9 +131,10 @@ class TimerScreen(TimerMixin, Screen):
         super(TimerScreen, self).timer_start()
 
     def timer_stop(self):
-        super(TimerScreen, self).timer_stop()
-        Audio.bell.play()
         Logger.debug('Stopping pomodoro')
+        super(TimerScreen, self).timer_stop()
+        if model.bell_after_pomodoro:
+            Audio.bell.play()
         screen_manager.current = 'pomodoros_over'
 
 
@@ -180,9 +183,10 @@ class BreakScreen(TimerMixin, Screen):
         super(BreakScreen, self).timer_start()
 
     def timer_stop(self):
-        super(BreakScreen, self).timer_stop()
         Logger.debug('Stopping break')
-        Audio.bell.play()
+        super(BreakScreen, self).timer_stop()
+        if model.bell_after_break:
+            Audio.bell.play()
         screen_manager.current = 'breaks_over'
 
 
@@ -199,6 +203,8 @@ class SettingsScreen(Screen):
         self.ids['short_break_duration'].value = Defaults.SHORT_BREAK
         self.ids['long_break_duration'].value = Defaults.LONG_BREAK
         self.ids['pomodori_for_cycle'].value = Defaults.POMODORI_FOR_CYCLE
+        self.ids['bell_after_pomodoro'].active = Defaults.BELL_AFTER_POMODORO
+        self.ids['bell_after_break'].active = Defaults.BELL_AFTER_BREAK
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value
@@ -211,6 +217,12 @@ class SettingsScreen(Screen):
 
     def set_pomodori_for_cycle(self, _, value):
         self.model.pomodori_for_cycle = value
+
+    def set_bell_after_pomodoro(self, _, value):
+        self.model.bell_after_pomodoro = value
+
+    def set_bell_after_break(self, _, value):
+        self.model.bell_after_break = value
 
 
 # Create the screen manager
