@@ -148,6 +148,7 @@ class BreakScreen(TimerMixin, Screen):
     button = None
     short_duration = 3
     long_duration = 10
+    break_label = DynamicLabel()
 
     def __init__(self, **kwargs):
         self.timer = Timer(seconds=self.duration)
@@ -159,6 +160,12 @@ class BreakScreen(TimerMixin, Screen):
             return self.model.short_break_duration
         else:
             return self.model.long_break_duration
+
+    def update_break_label(self):
+        if self.is_break_short():
+            self.break_label.label = 'Short break'
+        else:
+            self.break_label.label = 'Long break'
 
     def timer_pre_start(self):
         Logger.debug('Pre-starting break')
