@@ -14,6 +14,7 @@ from kivy.uix.screenmanager import (
     ScreenManager,
 )
 
+from ketchuporo import Audio
 from ketchuporo.const import Defaults
 
 
@@ -84,7 +85,6 @@ class TimerMixin(object):
         Clock.unschedule(self.timer_runner)
 
     def timer_runner(self, _):
-        Logger.debug('Tick! {}'.format(self.timer).replace(':', '-'))
         self.timer_tick()
         if not self.timer:
             self.timer_stop()
@@ -130,6 +130,7 @@ class TimerScreen(TimerMixin, Screen):
 
     def timer_stop(self):
         super(TimerScreen, self).timer_stop()
+        Audio.bell.play()
         Logger.debug('Stopping pomodoro')
         screen_manager.current = 'pomodoros_over'
 
@@ -181,6 +182,7 @@ class BreakScreen(TimerMixin, Screen):
     def timer_stop(self):
         super(BreakScreen, self).timer_stop()
         Logger.debug('Stopping break')
+        Audio.bell.play()
         screen_manager.current = 'breaks_over'
 
 

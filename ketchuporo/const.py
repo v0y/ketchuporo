@@ -3,3 +3,7 @@ class Defaults(object):
     SHORT_BREAK = 5
     LONG_BREAK = 15
     POMODORI_FOR_CYCLE = 4
+
+
+class Files(object):
+    BELL_SOUND = 'lib/audio/bell.wav'
