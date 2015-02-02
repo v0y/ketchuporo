@@ -57,7 +57,7 @@ model = TimerModel()
 
 class TimerMixin(object):
     duration = 0
-    timer = None  # Timer onject
+    timer = None  # Timer object
     timer_event = None  # Clock object
     model = model  # TimerModel object
 
