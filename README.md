@@ -4,24 +4,16 @@ Ketchuporo
 Pomodoro timer written in kivy
 
 
-Install and run
----------------
-
-```sh
-git clone git@github.com:v0y/ketchuporo.git
-cd ketchuporo
-python3 setup.py install
-python3 ketchuporo/main.py
-```
-
-
 Kivy installation
 -----------------
 
 ```sh
-mkvirtualenv -p /usr/bin/python3 <venv_name>
+venv_name="ketchuporo"
+venv_loc="~/.virtualenvs"
 
-pinstall cython==0.2
+mkvirtualenv -p /usr/bin/python3 $venv_name
+
+pip install cython==0.2
 
 sudo apt-get install -y --force-yes build-essential mercurial git python3.3 \
     python3.3-dev ffmpeg libsdl-image1.2-dev libsdl-mixer1.2-dev \
@@ -30,8 +22,22 @@ sudo apt-get install -y --force-yes build-essential mercurial git python3.3 \
 
 hg clone https://bitbucket.org/pygame/pygame
 cd pygame
-~/.virtualenvs/<venv_name>/bin/python setup.py build
-sudo ~/.virtualenvs/<venv_name>/bin/python setup.py install
+$venv_loc/$venv_name/bin/python setup.py build
+sudo $venv_loc/$venv_name/bin/python setup.py install
 cd ..
 sudo rm -rf pygame
+```
+
+
+Install and run
+---------------
+
+Prepare environment first - https://github.com/v0y/ketchuporo#kivy-installation
+
+```sh
+git clone git@github.com:v0y/ketchuporo.git
+workon ketchuporo  # or activate venv like an animal (source ~/.virtualenvs/ketchuporo/bin/activate) 
+cd ketchuporo
+python setup.py install  # or python setup.py develop
+python ketchuporo/main.py
 ```
