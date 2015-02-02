@@ -4,6 +4,17 @@ Ketchuporo
 Pomodoro timer written in kivy
 
 
+Install and run
+---------------
+
+```sh
+git clone git@github.com:v0y/ketchuporo.git
+cd ketchuporo
+python3 setup.py install
+python3 ketchuporo/main.py
+```
+
+
 Kivy installation
 -----------------
 
