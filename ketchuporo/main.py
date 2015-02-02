@@ -15,10 +15,13 @@ from kivy.uix.screenmanager import (
 )
 
 from ketchuporo import Audio
-from ketchuporo.const import Defaults
+from ketchuporo.const import (
+    Defaults,
+    Files,
+)
 
 
-Builder.load_file('ketchuporo.kv')
+Builder.load_file(Files.KV)
 
 
 class Timer(timedelta, object):

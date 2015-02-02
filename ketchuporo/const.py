@@ -1,3 +1,9 @@
+import os
+
+
+_curr_dir = os.path.dirname(__file__)
+
+
 class Defaults(object):
     POMODORO_DURATION = 25
     SHORT_BREAK = 5
@@ -8,4 +14,5 @@ class Defaults(object):
 
 
 class Files(object):
-    BELL_SOUND = 'lib/audio/bell.wav'
+    BELL_SOUND = os.path.join(_curr_dir, 'lib', 'audio', 'bell.wav')
+    KV = os.path.join(_curr_dir, 'ketchuporo.kv')
