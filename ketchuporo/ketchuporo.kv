@@ -50,20 +50,28 @@
 
 
 <PomodorosOverScreen>:
-    on_pre_enter: root.update_button_label()
+    on_pre_enter:
+        root.timer_pre_start()
+        root.update_button_label()
+    on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
         Label:
             font_size: 70
             text: "Time's Up!"
+        Label:
+            font_size: 70
+            text: "- {}".format(root.model.timer_label)
         Button:
             text: root.button_label.label
             on_release:
+                root.timer_unschedule()
                 root.manager.current = 'break'
                 root.manager.transition.direction = 'left'
         Button:
             text: "Back to menu"
             on_release:
+                root.model.timer_unschedule()
                 root.manager.current = 'welcome'
                 root.manager.transition.direction = 'right'
 
