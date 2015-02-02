@@ -211,8 +211,17 @@ class BreakScreen(TimerMixin, Screen):
         screen_manager.current = 'breaks_over'
 
 
-class BreaksOverScreen(Screen):
-    pass
+class BreaksOverScreen(TimerMixin, Screen):
+    countdown = False
+
+    def timer_pre_start(self):
+        Logger.debug('Pre-starting break is over')
+        self.timer_reset()
+
+    def timer_start(self):
+        Logger.debug('Starting break is over')
+        model.timer_label = str(self.timer)
+        super(BreaksOverScreen, self).timer_start()
 
 
 class SettingsScreen(Screen):
