@@ -15,4 +15,4 @@ class Defaults(object):
 
 class Files(object):
     BELL_SOUND = os.path.join(_curr_dir, 'lib', 'audio', 'bell.wav')
-    KV = os.path.join(_curr_dir, 'ketchuporo.kv')
+    KV = os.path.join(_curr_dir, 'views.kv')
