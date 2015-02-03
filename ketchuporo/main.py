@@ -56,19 +56,18 @@ class TimerModel(EventDispatcher):
         super(TimerModel, self).__init__()
         self.timer_label = ''
 
-model = TimerModel()
-
 
 class TimerMixin(object):
     duration = 0
     timer = None  # Timer object
     timer_event = None  # Clock object
-    model = model  # TimerModel object
+    model = TimerModel()
     countdown = True
 
-    @classmethod
-    def is_break_short(cls):
-        return bool(model.pomodori_counter % model.pomodori_for_cycle)
+    def is_break_short(self):
+        return bool(
+            self.model.pomodori_counter % self.model.pomodori_for_cycle
+        )
 
     def timer_reset(self):
         Logger.debug('Reset timer')
@@ -127,7 +126,7 @@ class TimerScreen(TimerMixin, Screen):
 
     def timer_pre_start(self):
         Logger.debug('Pre-starting pomodoro')
-        model.pomodori_counter += 1
+        self.model.pomodori_counter += 1
         self.timer_reset()
 
     def update_break_button_label(self):
@@ -138,13 +137,13 @@ class TimerScreen(TimerMixin, Screen):
 
     def timer_start(self):
         Logger.debug('Starting pomodoro')
-        model.timer_label = str(self.timer)
+        self.model.timer_label = str(self.timer)
         super(TimerScreen, self).timer_start()
 
     def timer_stop(self):
         Logger.debug('Stopping pomodoro')
         super(TimerScreen, self).timer_stop()
-        if model.bell_after_pomodoro:
+        if self.model.bell_after_pomodoro:
             Audio.bell.play()
         screen_manager.current = 'pomodoros_over'
 
@@ -153,8 +152,11 @@ class PomodorosOverScreen(TimerMixin, Screen):
     button_label = DynamicLabel()
     countdown = False
 
+    def __init__(self, **kwargs):
+        super(PomodorosOverScreen, self).__init__(**kwargs)
+
     def update_button_label(self):
-        if model.pomodori_counter % model.pomodori_for_cycle:
+        if self.is_break_short():
             self.button_label.label = 'Start short break'
         else:
             self.button_label.label = 'Start long break'
@@ -165,7 +167,7 @@ class PomodorosOverScreen(TimerMixin, Screen):
 
     def timer_start(self):
         Logger.debug('Starting pomodoro is over')
-        model.timer_label = str(self.timer)
+        self.model.timer_label = str(self.timer)
         super(PomodorosOverScreen, self).timer_start()
 
 
@@ -206,7 +208,7 @@ class BreakScreen(TimerMixin, Screen):
     def timer_stop(self):
         Logger.debug('Stopping break')
         super(BreakScreen, self).timer_stop()
-        if model.bell_after_break:
+        if self.model.bell_after_break:
             Audio.bell.play()
         screen_manager.current = 'breaks_over'
 
@@ -214,18 +216,23 @@ class BreakScreen(TimerMixin, Screen):
 class BreaksOverScreen(TimerMixin, Screen):
     countdown = False
 
+    def __init__(self, **kwargs):
+        super(BreaksOverScreen, self).__init__(**kwargs)
+
     def timer_pre_start(self):
         Logger.debug('Pre-starting break is over')
         self.timer_reset()
 
     def timer_start(self):
         Logger.debug('Starting break is over')
-        model.timer_label = str(self.timer)
+        self.model.timer_label = str(self.timer)
         super(BreaksOverScreen, self).timer_start()
 
 
-class SettingsScreen(Screen):
-    model = model
+class SettingsScreen(TimerMixin, Screen):
+
+    def __init__(self, **kwargs):
+        super(SettingsScreen, self).__init__(**kwargs)
 
     def reset_settings(self):
         Logger.debug('Reset settings to default')
