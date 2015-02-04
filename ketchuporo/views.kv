@@ -5,20 +5,23 @@
         orientation: "vertical"
         Label:
             text: "Ketchuporo Timer"
-        Button:
-            text: "Start!"
-            on_release:
-                root.reset_pomodori_counter()
-                root.manager.current = 'timer'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Settings"
-            on_release:
-                root.manager.current = 'settings'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Quit"
-            on_press: root.exit()
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Quit"
+                on_press: root.exit()
+            Button:
+                text: "Settings"
+                on_release:
+                    root.manager.current = 'settings'
+                    root.manager.transition.direction = 'left'
+            Button:
+                text: "Start!"
+                on_release:
+                    root.reset_pomodori_counter()
+                    root.manager.current = 'timer'
+                    root.manager.transition.direction = 'left'
 
 
 <TimerScreen>:
@@ -32,18 +35,21 @@
             text: "Pomodoro {}".format(root.model.pomodori_counter)
         Label:
             text: root.model.timer_label
-        Button:
-            text: root.start_break_label.label
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'break'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Back to menu"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'welcome'
-                root.manager.transition.direction = 'right'
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Back to menu"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'welcome'
+                    root.manager.transition.direction = 'right'
+            Button:
+                text: root.start_break_label.label
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'break'
+                    root.manager.transition.direction = 'left'
 
 
 <PomodorosOverScreen>:
@@ -57,18 +63,21 @@
             text: "Time's Up!"
         Label:
             text: "- {}".format(root.model.timer_label)
-        Button:
-            text: root.button_label.label
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'break'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Back to menu"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'welcome'
-                root.manager.transition.direction = 'right'
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Back to menu"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'welcome'
+                    root.manager.transition.direction = 'right'
+            Button:
+                text: root.button_label.label
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'break'
+                    root.manager.transition.direction = 'left'
 
 
 <BreakScreen>:
@@ -82,18 +91,21 @@
             text: root.break_label.label
         Label:
             text: root.model.timer_label
-        Button:
-            text: "Start pomodoro"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'timer'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Back to menu"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'welcome'
-                root.manager.transition.direction = 'right'
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Back to menu"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'welcome'
+                    root.manager.transition.direction = 'right'
+            Button:
+                text: "Start pomodoro"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'timer'
+                    root.manager.transition.direction = 'left'
 
 
 <BreaksOverScreen>:
@@ -105,18 +117,21 @@
             text: "Break is over!"
         Label:
             text: "- {}".format(root.model.timer_label)
-        Button:
-            text: "Start pomodoro"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'timer'
-                root.manager.transition.direction = 'left'
-        Button:
-            text: "Back to menu"
-            on_release:
-                root.timer_unschedule()
-                root.manager.current = 'welcome'
-                root.manager.transition.direction = 'right'
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Back to menu"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'welcome'
+                    root.manager.transition.direction = 'right'
+            Button:
+                text: "Start pomodoro"
+                on_release:
+                    root.timer_unschedule()
+                    root.manager.current = 'timer'
+                    root.manager.transition.direction = 'left'
 
 
 <SettingsScreen>:
@@ -168,21 +183,21 @@
 
         BoxLayout:
             orientation: "horizontal"
+            Label:
+                text: "Bell after pomodoro"
             CheckBox:
                 id: bell_after_pomodoro
                 active: True
                 on_active: root.set_bell_after_pomodoro(*args)
-            Label:
-                text: "Bell after pomodoro"
 
         BoxLayout:
             orientation: "horizontal"
+            Label:
+                text: "Bell after break"
             CheckBox:
                 id: bell_after_break
                 active: True
                 on_active: root.set_bell_after_break(*args)
-            Label:
-                text: "Bell after break"
 
         BoxLayout:
             orientation: "horizontal"
