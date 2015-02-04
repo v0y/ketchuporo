@@ -4,7 +4,6 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            font_size: 70
             text: "Ketchuporo Timer"
         Button:
             text: "Start!"
@@ -30,10 +29,8 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            font_size: 70
             text: "Pomodoro {}".format(root.model.pomodori_counter)
         Label:
-            font_size: 70
             text: root.model.timer_label
         Button:
             text: root.start_break_label.label
@@ -57,10 +54,8 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            font_size: 70
             text: "Time's Up!"
         Label:
-            font_size: 70
             text: "- {}".format(root.model.timer_label)
         Button:
             text: root.button_label.label
@@ -84,10 +79,8 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            font_size: 70
             text: root.break_label.label
         Label:
-            font_size: 70
             text: root.model.timer_label
         Button:
             text: "Start pomodoro"
@@ -109,10 +102,8 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            font_size: 70
             text: "Break is over!"
         Label:
-            font_size: 70
             text: "- {}".format(root.model.timer_label)
         Button:
             text: "Start pomodoro"
@@ -133,7 +124,6 @@
         id: layout
         orientation: "vertical"
         Label:
-            font_size: 25
             text: "Pomodoro duration: {} min".format(root.model.pomodoro_duration)
         Slider:
             id: pomodoro_duration
@@ -143,7 +133,6 @@
             step: 1
             on_value: root.set_pomodoro_duration(*args)
         Label:
-            font_size: 25
             text: "Short break duration: {} min".format(root.model.short_break_duration)
         Slider:
             id: short_break_duration
@@ -153,7 +142,6 @@
             step: 1
             on_value: root.set_short_break_duration(*args)
         Label:
-            font_size: 25
             text: "Long break duration: {} min".format(root.model.long_break_duration)
         Slider:
             id: long_break_duration
@@ -163,7 +151,6 @@
             step: 1
             on_value: root.set_long_break_duration(*args)
         Label:
-            font_size: 25
             text: "Long break after {} pomodori".format(root.model.pomodori_for_cycle)
         Slider:
             id: pomodori_for_cycle
@@ -173,14 +160,12 @@
             step: 1
             on_value: root.set_pomodori_for_cycle(*args)
         Label:
-            font_size: 25
             text: "Bell after pomodoro"
         CheckBox:
             id: bell_after_pomodoro
             active: True
             on_active: root.set_bell_after_pomodoro(*args)
         Label:
-            font_size: 25
             text: "Bell after break"
         CheckBox:
             id: bell_after_break
