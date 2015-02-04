@@ -123,6 +123,7 @@
     BoxLayout:
         id: layout
         orientation: "vertical"
+
         Label:
             text: "Pomodoro duration: {} min".format(root.model.pomodoro_duration)
         Slider:
@@ -132,6 +133,7 @@
             max: 60
             step: 1
             on_value: root.set_pomodoro_duration(*args)
+
         Label:
             text: "Short break duration: {} min".format(root.model.short_break_duration)
         Slider:
@@ -141,6 +143,7 @@
             max: 15
             step: 1
             on_value: root.set_short_break_duration(*args)
+
         Label:
             text: "Long break duration: {} min".format(root.model.long_break_duration)
         Slider:
@@ -150,8 +153,10 @@
             max: 30
             step: 1
             on_value: root.set_long_break_duration(*args)
+
         Label:
             text: "Long break after {} pomodori".format(root.model.pomodori_for_cycle)
+            padding: [0, 0]
         Slider:
             id: pomodori_for_cycle
             value: 4
@@ -159,23 +164,33 @@
             max: 10
             step: 1
             on_value: root.set_pomodori_for_cycle(*args)
-        Label:
-            text: "Bell after pomodoro"
-        CheckBox:
-            id: bell_after_pomodoro
-            active: True
-            on_active: root.set_bell_after_pomodoro(*args)
-        Label:
-            text: "Bell after break"
-        CheckBox:
-            id: bell_after_break
-            active: True
-            on_active: root.set_bell_after_break(*args)
-        Button:
-            text: "Reset to defaults"
-            on_release: root.reset_settings()
-        Button:
-            text: "Save"
-            on_release:
-                root.manager.current = 'welcome'
-                root.manager.transition.direction = 'right'
+            padding: [0, 0]
+
+        BoxLayout:
+            orientation: "horizontal"
+            CheckBox:
+                id: bell_after_pomodoro
+                active: True
+                on_active: root.set_bell_after_pomodoro(*args)
+            Label:
+                text: "Bell after pomodoro"
+
+        BoxLayout:
+            orientation: "horizontal"
+            CheckBox:
+                id: bell_after_break
+                active: True
+                on_active: root.set_bell_after_break(*args)
+            Label:
+                text: "Bell after break"
+
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                text: "Reset to defaults"
+                on_release: root.reset_settings()
+            Button:
+                text: "Save"
+                on_release:
+                    root.manager.current = 'welcome'
+                    root.manager.transition.direction = 'right'
