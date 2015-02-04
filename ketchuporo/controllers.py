@@ -4,9 +4,7 @@ from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
-from kivy.properties import (
-    StringProperty,
-)
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 
 from ketchuporo import Audio
