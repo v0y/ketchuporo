@@ -6,22 +6,20 @@
         Label:
             text: "Ketchuporo Timer"
 
-        BoxLayout:
-            orientation: "horizontal"
-            Button:
-                text: "Quit"
-                on_press: root.exit()
-            Button:
-                text: "Settings"
-                on_release:
-                    root.manager.current = 'settings'
-                    root.manager.transition.direction = 'left'
-            Button:
-                text: "Start!"
-                on_release:
-                    root.reset_pomodori_counter()
-                    root.manager.current = 'timer'
-                    root.manager.transition.direction = 'left'
+        Button:
+            text: "Start!"
+            on_release:
+                root.reset_pomodori_counter()
+                root.manager.current = 'timer'
+                root.manager.transition.direction = 'left'
+        Button:
+            text: "Settings"
+            on_release:
+                root.manager.current = 'settings'
+                root.manager.transition.direction = 'left'
+        Button:
+            text: "Quit"
+            on_press: root.exit()
 
 
 <TimerScreen>:
