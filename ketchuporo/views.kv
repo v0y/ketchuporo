@@ -1,23 +1,53 @@
 #:kivy 1.8.0
 
+# Lanel mixins
+<BaseLabel@Label>:
+    text_size: self.width, None
+    halign: "center"
+
+
+<SmallLabel@BaseLabel>:
+    font_size: self.height/4
+
+
+<MediumLabel@BaseLabel>:
+    font_size: self.height/3
+
+
+<BigLabel@BaseLabel>:
+    font_size: self.height/2
+
+
+# Button mixins
+<BaseButton@Button>
+    text_size: self.width, None
+    halign: "center"
+
+<SmallButton@BaseButton>
+    font_size: self.height/5
+
+<BigButton@BaseButton>
+    font_size: self.height/3
+
+
 <WelcomeScreen>:
     BoxLayout:
         orientation: "vertical"
-        Label:
+        MediumLabel:
             text: "Ketchuporo Timer"
 
-        Button:
+        SmallButton:
             text: "Start!"
             on_release:
                 root.reset_pomodori_counter()
                 root.manager.current = 'timer'
                 root.manager.transition.direction = 'left'
-        Button:
+        SmallButton:
             text: "Settings"
             on_release:
                 root.manager.current = 'settings'
                 root.manager.transition.direction = 'left'
-        Button:
+        SmallButton:
             text: "Quit"
             on_press: root.exit()
 
@@ -29,20 +59,20 @@
     on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
-        Label:
+        SmallLabel:
             text: "Pomodoro {}".format(root.model.pomodori_counter)
-        Label:
+        BigLabel:
             text: root.model.timer_label
 
         BoxLayout:
             orientation: "horizontal"
-            Button:
+            SmallButton:
                 text: "Back to menu"
                 on_release:
                     root.timer_unschedule()
                     root.manager.current = 'welcome'
                     root.manager.transition.direction = 'right'
-            Button:
+            SmallButton:
                 text: root.start_break_label.label
                 on_release:
                     root.timer_unschedule()
@@ -57,20 +87,20 @@
     on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
-        Label:
+        SmallLabel:
             text: "Time's Up!"
-        Label:
+        BigLabel:
             text: "- {}".format(root.model.timer_label)
 
         BoxLayout:
             orientation: "horizontal"
-            Button:
+            SmallButton:
                 text: "Back to menu"
                 on_release:
                     root.timer_unschedule()
                     root.manager.current = 'welcome'
                     root.manager.transition.direction = 'right'
-            Button:
+            SmallButton:
                 text: root.button_label.label
                 on_release:
                     root.timer_unschedule()
@@ -85,20 +115,20 @@
     on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
-        Label:
+        SmallLabel:
             text: root.break_label.label
-        Label:
+        BigLabel:
             text: root.model.timer_label
 
         BoxLayout:
             orientation: "horizontal"
-            Button:
+            SmallButton:
                 text: "Back to menu"
                 on_release:
                     root.timer_unschedule()
                     root.manager.current = 'welcome'
                     root.manager.transition.direction = 'right'
-            Button:
+            SmallButton:
                 text: "Start pomodoro"
                 on_release:
                     root.timer_unschedule()
@@ -111,20 +141,20 @@
     on_enter: root.timer_start()
     BoxLayout:
         orientation: "vertical"
-        Label:
+        SmallLabel:
             text: "Break is over!"
-        Label:
+        BigLabel:
             text: "- {}".format(root.model.timer_label)
 
         BoxLayout:
             orientation: "horizontal"
-            Button:
+            SmallButton:
                 text: "Back to menu"
                 on_release:
                     root.timer_unschedule()
                     root.manager.current = 'welcome'
                     root.manager.transition.direction = 'right'
-            Button:
+            SmallButton:
                 text: "Start pomodoro"
                 on_release:
                     root.timer_unschedule()
@@ -137,7 +167,7 @@
         id: layout
         orientation: "vertical"
 
-        Label:
+        MediumLabel:
             text: "Pomodoro duration: {} min".format(root.model.pomodoro_duration)
         Slider:
             id: pomodoro_duration
@@ -147,7 +177,7 @@
             step: 1
             on_value: root.set_pomodoro_duration(*args)
 
-        Label:
+        MediumLabel:
             text: "Short break duration: {} min".format(root.model.short_break_duration)
         Slider:
             id: short_break_duration
@@ -157,7 +187,7 @@
             step: 1
             on_value: root.set_short_break_duration(*args)
 
-        Label:
+        MediumLabel:
             text: "Long break duration: {} min".format(root.model.long_break_duration)
         Slider:
             id: long_break_duration
@@ -167,7 +197,7 @@
             step: 1
             on_value: root.set_long_break_duration(*args)
 
-        Label:
+        MediumLabel:
             text: "Long break after {} pomodori".format(root.model.pomodori_for_cycle)
             padding: [0, 0]
         Slider:
@@ -177,12 +207,12 @@
             max: 10
             step: 1
             on_value: root.set_pomodori_for_cycle(*args)
-            padding: [0, 0]
 
         BoxLayout:
             orientation: "horizontal"
-            Label:
+            MediumLabel:
                 text: "Bell after pomodoro"
+                halign: "right"
             CheckBox:
                 id: bell_after_pomodoro
                 active: True
@@ -190,8 +220,9 @@
 
         BoxLayout:
             orientation: "horizontal"
-            Label:
+            MediumLabel:
                 text: "Bell after break"
+                halign: "right"
             CheckBox:
                 id: bell_after_break
                 active: True
@@ -199,10 +230,10 @@
 
         BoxLayout:
             orientation: "horizontal"
-            Button:
+            BigButton:
                 text: "Reset to defaults"
                 on_release: root.reset_settings()
-            Button:
+            BigButton:
                 text: "Save"
                 on_release:
                     root.manager.current = 'welcome'
