@@ -22,6 +22,9 @@
 <BaseButton@Button>
     text_size: self.width, None
     halign: "center"
+    color: .8, .2, .247, 1
+    background_color: 1, 1, 1, 1
+    background_normal: ""
 
 <SmallButton@BaseButton>
     font_size: self.height/5
@@ -29,10 +32,15 @@
 <BigButton@BaseButton>
     font_size: self.height/3
 
-
 <BaseLayout@BoxLayout>
     spacing: 10
     padding: 10
+    canvas:
+        Color:
+            rgba: .8, .2, .247, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
 
 <WelcomeScreen>:
