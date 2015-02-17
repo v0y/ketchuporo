@@ -44,7 +44,7 @@ class TimerMixin(object):
 
     def timer_reset(self):
         Logger.debug('Reset timer')
-        self.timer = Timer(seconds=self.duration)
+        self.timer = Timer(minutes=self.duration)
         self.model.timer_label = str(self.timer)
 
     def reset_pomodori_counter(self):
@@ -152,7 +152,7 @@ class BreakScreen(TimerMixin, Screen):
     break_label = DynamicLabel()
 
     def __init__(self, screen_manager, **kwargs):
-        self.timer = Timer(seconds=self.duration)
+        self.timer = Timer(minutes=self.duration)
         self.screen_manager = screen_manager
         super(BreakScreen, self).__init__(**kwargs)
 
