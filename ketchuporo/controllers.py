@@ -9,10 +9,7 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 
 from ketchuporo import Audio
-from ketchuporo.const import (
-    Defaults,
-    Files,
-)
+from ketchuporo.const import Files
 from ketchuporo.models import TimerModel
 
 
@@ -214,21 +211,33 @@ class SettingsScreen(TimerMixin, Screen):
         super(SettingsScreen, self).__init__(**kwargs)
 
         # load settings
+        self.prepare_settings_file()
         self.settings = {}
         self.load_settings()
 
+    @staticmethod
+    def prepare_settings_file():
+        Logger.debug('Preparing settins file...')
+        try:
+            settings_file = open(Files.SETTINGS, 'r')
+        except FileNotFoundError:
+            Logger.debug('Settins file not found, creating from defaults')
+            default_settings_file = open(Files.SETTINGS_DEFAULT, 'r')
+            settings_file = open(Files.SETTINGS, 'w')
+            settings_file.write(default_settings_file.read())
+            settings_file.close()
+            default_settings_file.close()
+        else:
+            settings_file.close()
+
     def reset_settings(self):
         Logger.debug('Reset settings to default')
-        self.ids['pomodoro_duration'].value = Defaults.POMODORO_DURATION
-        self.ids['short_break_duration'].value = Defaults.SHORT_BREAK
-        self.ids['long_break_duration'].value = Defaults.LONG_BREAK
-        self.ids['pomodori_for_cycle'].value = Defaults.POMODORI_FOR_CYCLE
-        self.ids['bell_after_pomodoro'].active = Defaults.BELL_AFTER_POMODORO
-        self.ids['bell_after_break'].active = Defaults.BELL_AFTER_BREAK
+        self.load_settings(Files.SETTINGS_DEFAULT)
 
-    def load_settings(self):
-        Logger.debug('Loading settings from file {}...'.format(Files.SETTINGS))
-        settings_file = open(Files.SETTINGS, 'r')
+    def load_settings(self, file_=None):
+        file_ = file_ or Files.SETTINGS
+        Logger.debug('Loading settings from file {}...'.format(file_))
+        settings_file = open(file_, 'r')
         self.settings = json.loads(settings_file.read())
         settings_file.close()
 
@@ -239,6 +248,7 @@ class SettingsScreen(TimerMixin, Screen):
         Logger.debug('Settings loaded!')
 
     def save_settings(self):
+        Logger.debug('Saving settings...')
         self.settings['pomodoro_duration'] \
             = self.ids['pomodoro_duration'].value
         self.settings['short_break_duration'] \
@@ -255,6 +265,7 @@ class SettingsScreen(TimerMixin, Screen):
         settings_file = open(Files.SETTINGS, 'w')
         settings_file.write(json.dumps(self.settings))
         settings_file.close()
+        Logger.debug('Saved!')
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value

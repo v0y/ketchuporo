@@ -180,8 +180,6 @@
 
 
 <SettingsScreen>:
-    on_pre_leave: root.save_settings()
-
     BaseLayout:
         id: layout
         orientation: "vertical"
@@ -258,5 +256,6 @@
             BigButton:
                 text: "Save"
                 on_release:
+                    root.save_settings()
                     root.manager.current = 'welcome'
                     root.manager.transition.direction = 'right'

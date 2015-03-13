@@ -1,8 +1,1 @@
-{
-  "pomodoro_duration": 25,
-  "short_break_duration": 5,
-  "long_break_duration": 15,
-  "pomodori_for_cycle": 4,
-  "bell_after_pomodoro": true,
-  "bell_after_break": true
-}
+{"pomodori_for_cycle": 7, "bell_after_break": true, "pomodoro_duration": 25, "short_break_duration": 5, "bell_after_pomodoro": true, "long_break_duration": 11}
