@@ -180,6 +180,8 @@
 
 
 <SettingsScreen>:
+    on_pre_leave: root.save_settings()
+
     BaseLayout:
         id: layout
         orientation: "vertical"

@@ -230,11 +230,31 @@ class SettingsScreen(TimerMixin, Screen):
         Logger.debug('Loading settings from file {}...'.format(Files.SETTINGS))
         settings_file = open(Files.SETTINGS, 'r')
         self.settings = json.loads(settings_file.read())
+        settings_file.close()
+
         for k, v in self.settings.items():
             Logger.debug(' * set {} to {}'.format(k, v))
             self.ids[k].value = v
             setattr(self.model, k, v)
         Logger.debug('Settings loaded!')
+
+    def save_settings(self):
+        self.settings['pomodoro_duration'] \
+            = self.ids['pomodoro_duration'].value
+        self.settings['short_break_duration'] \
+            = self.ids['short_break_duration'].value
+        self.settings['long_break_duration'] \
+            = self.ids['long_break_duration'].value
+        self.settings['pomodori_for_cycle'] \
+            = self.ids['pomodori_for_cycle'].value
+        self.settings['bell_after_pomodoro'] \
+            = self.ids['bell_after_pomodoro'].active
+        self.settings['bell_after_break'] \
+            = self.ids['bell_after_break'].active
+
+        settings_file = open(Files.SETTINGS, 'w')
+        settings_file.write(json.dumps(self.settings))
+        settings_file.close()
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value
