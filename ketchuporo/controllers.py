@@ -1,4 +1,5 @@
 from datetime import timedelta
+import json
 
 from kivy import Logger
 from kivy.app import App
@@ -8,7 +9,10 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 
 from ketchuporo import Audio
-from ketchuporo.const import Defaults
+from ketchuporo.const import (
+    Defaults,
+    Files,
+)
 from ketchuporo.models import TimerModel
 
 
@@ -209,6 +213,10 @@ class SettingsScreen(TimerMixin, Screen):
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
 
+        # load settings
+        self.settings = {}
+        self.load_settings()
+
     def reset_settings(self):
         Logger.debug('Reset settings to default')
         self.ids['pomodoro_duration'].value = Defaults.POMODORO_DURATION
@@ -217,6 +225,16 @@ class SettingsScreen(TimerMixin, Screen):
         self.ids['pomodori_for_cycle'].value = Defaults.POMODORI_FOR_CYCLE
         self.ids['bell_after_pomodoro'].active = Defaults.BELL_AFTER_POMODORO
         self.ids['bell_after_break'].active = Defaults.BELL_AFTER_BREAK
+
+    def load_settings(self):
+        Logger.debug('Loading settings from file {}...'.format(Files.SETTINGS))
+        settings_file = open(Files.SETTINGS, 'r')
+        self.settings = json.loads(settings_file.read())
+        for k, v in self.settings.items():
+            Logger.debug(' * set {} to {}'.format(k, v))
+            self.ids[k].value = v
+            setattr(self.model, k, v)
+        Logger.debug('Settings loaded!')
 
     def set_pomodoro_duration(self, _, value):
         self.model.pomodoro_duration = value
