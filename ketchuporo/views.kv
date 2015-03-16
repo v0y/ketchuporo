@@ -1,6 +1,6 @@
 #:kivy 1.8.0
 
-# Lanel mixins
+# Label mixins
 <BaseLabel@Label>:
     text_size: self.width, None
     halign: "center"
@@ -19,20 +19,20 @@
 
 
 # Button mixins
-<BaseButton@Button>
+<BaseButton@Button>:
     text_size: self.width, None
     halign: "center"
     color: .8, .2, .247, 1
     background_color: 1, 1, 1, 1
     background_normal: ""
 
-<SmallButton@BaseButton>
+<SmallButton@BaseButton>:
     font_size: self.height/5
 
-<BigButton@BaseButton>
+<BigButton@BaseButton>:
     font_size: self.height/3
 
-<BaseLayout@BoxLayout>
+<BaseLayout@BoxLayout>:
     spacing: 10
     padding: 10
     canvas:
@@ -41,6 +41,15 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
+
+<StyledCheckBox@CheckBox>:
+    canvas:
+        Clear:
+        Rectangle:
+            size: 18, 18
+            pos: int(self.center_x - 9), int(self.center_y - 9)
+            source: "atlas://lib/graphics/ketchuporo/background_checkbox_{}".format('down' if self.active else 'normal')
 
 
 <WelcomeScreen>:
@@ -231,7 +240,7 @@
             MediumLabel:
                 text: "Bell after pomodoro"
                 halign: "right"
-            CheckBox:
+            StyledCheckBox:
                 id: bell_after_pomodoro
                 active: True
                 on_active: root.set_bell_after_pomodoro(*args)
@@ -242,7 +251,7 @@
             MediumLabel:
                 text: "Bell after break"
                 halign: "right"
-            CheckBox:
+            StyledCheckBox:
                 id: bell_after_break
                 active: True
                 on_active: root.set_bell_after_break(*args)
