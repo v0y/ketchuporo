@@ -1,7 +1,28 @@
 {
   "ketchuporo-0.png": {
-    "background_checkbox_normal": [70, 108, 18, 18],
-    "background_checkbox_down": [50, 108, 18, 18],
-    "slider_cursor": [2, 80, 46, 46]
+    "slider_cursor": [
+      2,
+      80,
+      46,
+      46
+    ],
+    "button_pressed": [
+      50,
+      96,
+      30,
+      30
+    ],
+    "background_checkbox_normal": [
+      102,
+      108,
+      18,
+      18
+    ],
+    "background_checkbox_down": [
+      82,
+      108,
+      18,
+      18
+    ]
   }
 }
