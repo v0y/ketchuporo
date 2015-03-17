@@ -241,9 +241,26 @@ class SettingsScreen(TimerMixin, Screen):
         self.settings = json.loads(settings_file.read())
         settings_file.close()
 
+        update_value_for = [
+            'pomodoro_duration',
+            'short_break_duration',
+            'long_break_duration',
+            'pomodori_for_cycle',
+        ]
+
+        update_active_for = [
+            'bell_after_pomodoro',
+            'bell_after_break',
+        ]
+
         for k, v in self.settings.items():
             Logger.debug(' * set {} to {}'.format(k, v))
-            self.ids[k].value = v
+
+            if k in update_value_for:
+                self.ids[k].value = v
+            elif k in update_active_for:
+                self.ids[k].active = v
+
             setattr(self.model, k, v)
         Logger.debug('Settings loaded!')
 
