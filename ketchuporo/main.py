@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.core.text import LabelBase
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 
@@ -14,6 +15,7 @@ from ketchuporo.controllers import TimerScreen
 
 
 Builder.load_file(Files.KV)
+LabelBase.register(name='RobotoLight', fn_regular='lib/fonts/roboto_light.ttf')
 
 
 # Create the screen manager
