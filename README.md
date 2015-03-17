@@ -41,3 +41,11 @@ cd ketchuporo
 python setup.py install  # or python setup.py develop
 python ketchuporo/main.py
 ```
+
+
+Create atlas
+------------
+
+```sh
+python -m kivy.atlas lib/graphics/ketchuporo 128 lib/graphics/*.png
+```
