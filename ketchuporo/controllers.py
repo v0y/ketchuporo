@@ -220,7 +220,7 @@ class SettingsScreen(TimerMixin, Screen):
         Logger.debug('Preparing settins file...')
         try:
             settings_file = open(Files.SETTINGS, 'r')
-        except FileNotFoundError:
+        except IOError:
             Logger.debug('Settins file not found, creating from defaults')
             default_settings_file = open(Files.SETTINGS_DEFAULT, 'r')
             settings_file = open(Files.SETTINGS, 'w')
