@@ -7,7 +7,7 @@ title = Ketchuporo
 package.name = kethuporo
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.kethuporo
+package.domain = pl.lolwtf
 
 # (str) Source code where the main.py live
 source.dir = ./ketchuporo
@@ -33,7 +33,7 @@ version = 0.1.0
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy
+requirements = kivy,sqlite3,pillow
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -63,10 +63,10 @@ fullscreen = 1
 #android.permissions = INTERNET
 
 # (int) Android API to use
-#android.api = 14
+android.api = 14
 
 # (int) Minimum API required (8 = Android 2.2 devices)
-android.minapi = 8
+android.minapi = 14
 
 # (int) Android SDK version to use
 android.sdk = 21
@@ -75,7 +75,7 @@ android.sdk = 21
 android.ndk = 9c
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
-#android.private_storage = True
+android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
 #android.ndk_path =
@@ -108,7 +108,7 @@ android.ndk = 9c
 
 # (str) OUYA Console category. Should be one of GAME or APP
 # If you leave this blank, OUYA support will not be enabled
-#android.ouya.category = GAME
+#android.ouya.category = APP
 
 # (str) Filename of OUYA Console icon. It must be a 732x412 png image.
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
@@ -148,7 +148,7 @@ android.ndk = 9c
 [buildozer]
 
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 1
+log_level = 2
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1
