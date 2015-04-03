@@ -1,3 +1,5 @@
+[![Code Health](https://landscape.io/github/v0y/ketchuporo/master/landscape.svg?style=flat)](https://landscape.io/github/v0y/ketchuporo/master)
+
 Ketchuporo
 ==========
 
