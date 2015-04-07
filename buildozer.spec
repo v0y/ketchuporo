@@ -33,7 +33,7 @@ version = 0.1.0
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = pil,kivy,sqlite3
+requirements = pil,kivy,sqlite3,plyer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

@@ -7,10 +7,32 @@ from kivy.clock import Clock
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
+from plyer import notification
 
 from ketchuporo import Audio
-from ketchuporo.const import Files
+from ketchuporo.const import (
+    APP_NAME,
+    Files,
+)
 from ketchuporo.models import TimerModel
+
+
+notifications_kwargs = {
+    'pomodoros_over': {
+        'title': 'Pomodoro is over!',
+        'message': 'Take a break.',
+        'app_name': APP_NAME,
+        'app_icon': '',
+        'timeout': 20,
+    },
+    'breaks_over': {
+        'title': 'Break is over!',
+        'message': 'Get back to work.',
+        'app_name': APP_NAME,
+        'app_icon': '',
+        'timeout': 20,
+    }
+}
 
 
 class Timer(timedelta, object):
@@ -118,6 +140,7 @@ class TimerScreen(TimerMixin, Screen):
     def timer_stop(self):
         Logger.debug('Stopping pomodoro')
         super(TimerScreen, self).timer_stop()
+        notification.notify(**notifications_kwargs['pomodoros_over'])
         if self.model.bell_after_pomodoro:
             Audio.bell.play()
         self.screen_manager.current = 'pomodoros_over'
@@ -186,6 +209,7 @@ class BreakScreen(TimerMixin, Screen):
         super(BreakScreen, self).timer_stop()
         if self.model.bell_after_break:
             Audio.bell.play()
+        notification.notify(**notifications_kwargs['breaks_over'])
         self.screen_manager.current = 'breaks_over'
 
 

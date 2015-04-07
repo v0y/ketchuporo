@@ -2,6 +2,7 @@ from setuptools import setup
 
 requires = [
     'kivy==1.8.0',
+    'plyer==1.2.3',
 ]
 
 
