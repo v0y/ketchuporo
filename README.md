@@ -18,7 +18,7 @@ mkvirtualenv -p /usr/bin/python3 $venv_name
 pip install cython==0.20
 
 sudo apt-get install -y --force-yes build-essential mercurial git python3.4 \
-    python3.4-dev ffmpeg libsdl-image1.2-dev libsdl-mixer1.2-dev \
+    python3.4-dev libsdl-image1.2-dev libsdl-mixer1.2-dev \
     libsdl-ttf2.0-dev libsmpeg-dev libsdl1.2-dev libportmidi-dev \
     libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
 
