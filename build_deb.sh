@@ -4,8 +4,11 @@ export VERSION=0.1.0
 
 mkdir -p build/usr/share/python
 virtualenv build/usr/share/python/ketchuporo
-build/usr/share/python/ketchuporo/bin/pip install -U pip distribute
-build/usr/share/python/ketchuporo/bin/pip uninstall -y distribute
+which pip
+. build/usr/share/python/ketchuporo/bin/activate
+pip install -U pip distribute
+pip install kivy==1.9.0
+pip install plyer==1.2.3
 
 cd build/usr/share/python/ketchuporo
 virtualenv-tools --update-path /usr/share/python/ketchuporo
@@ -15,12 +18,15 @@ find build -iname *.pyc -exec rm {} \;
 find build -iname *.pyo -exec rm {} \;
 
 fpm \
-  -t deb -s dir -n Ketchuporo -v $VERSION \
+  -t deb \
+  -n ketchuporo \
+  -v $VERSION \
   --iteration `date +%s` \
   -d python3 \
-  -d 'cython > 0.20' \
-  -d 'kivy > 1.8.0' \
-  -d 'plyer > 1.2.3' \
+  -d 'cython >= 0.20' \
   --url https://github.com/v0y/ketchuporo \
   --description 'Simple Pomodoro timer.' \
-  --license 'MIT'
+  --license 'MIT' \
+  --maintainer 'Rafał Mirończyk <voy@lolwtf.pl>' \
+  --category 'accessories' \
+  -s dir ketchuporo,build
