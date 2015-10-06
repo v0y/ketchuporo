@@ -48,5 +48,5 @@ Create atlas
 ------------
 
 ```sh
-python -m kivy.atlas lib/graphics/ketchuporo 128 lib/graphics/*.png
+python -m kivy.atlas ketchuporo/lib/graphics/ketchuporo 256 ketchuporo/lib/graphics/*.png
 ```
