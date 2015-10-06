@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from kivy.event import EventDispatcher
 from kivy.properties import (
     StringProperty,

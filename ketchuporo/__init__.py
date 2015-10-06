@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from kivy import Logger
 from kivy.core.audio import SoundLoader
 
