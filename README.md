@@ -31,7 +31,7 @@ Prepare environment first - https://github.com/v0y/ketchuporo#kivy-installation
 ```sh
 git clone git@github.com:v0y/ketchuporo.git
 workon ketchuporo  # or activate venv like an animal (source ~/.virtualenvs/ketchuporo/bin/activate)
-pip install cython==0.20
+pip install cython==0.23
 cd ketchuporo
 python setup.py install  # or python setup.py develop
 python ketchuporo/main.py
