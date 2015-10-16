@@ -24,10 +24,12 @@ LabelBase.register(name='RobotoLight', fn_regular='lib/fonts/roboto_light.ttf')
 screen_manager = ScreenManager()
 screen_manager.add_widget(WelcomeScreen(name='welcome'))
 screen_manager.add_widget(
-    TimerScreen(screen_manager=screen_manager, name='timer'))
+    TimerScreen(screen_manager=screen_manager, name='timer')
+)
 screen_manager.add_widget(PomodorosOverScreen(name='pomodoros_over'))
 screen_manager.add_widget(
-    BreakScreen(screen_manager=screen_manager, name='break'))
+    BreakScreen(screen_manager=screen_manager, name='break')
+)
 screen_manager.add_widget(BreaksOverScreen(name='breaks_over'))
 screen_manager.add_widget(SettingsScreen(name='settings'))
 
